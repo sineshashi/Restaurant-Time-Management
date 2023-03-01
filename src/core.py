@@ -116,7 +116,6 @@ def resample_and_calculate(store_id: int, df: pd.DataFrame, schedule_dict:dict, 
             data["last_week_downtime_hours"] +=  round(calculate_time(last_week_start).total_seconds()/3600, 2)
             data["last_day_downtime_hours"] += round(calculate_time(last_day_start).total_seconds()/3600, 2)
             data["last_hour_downtime_minutes"] += round(calculate_time(last_hour_start).total_seconds()/60, 2)
-    
     return data
 
 async def start_report_generation(report_id: str)->None:
@@ -139,7 +138,7 @@ async def start_report_generation(report_id: str)->None:
     df["timestamp_utc"] = pd.to_datetime(df["timestamp_utc"], utc=True)
 
     report_data = []
-    with multiprocessing.Pool(max_workers=3) as pool:
+    with multiprocessing.Pool() as pool:
         try:
             report_data = pool.starmap(resample_and_calculate, [(store_id, storedf, schedule_dict, timezones) for store_id, storedf in df.groupby("store_id")])
         except Exception as e:
