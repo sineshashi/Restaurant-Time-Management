@@ -1,0 +1,6 @@
+*.pyc
+*.cpython
+/static
+/reports
+/env
+/local_migrations
